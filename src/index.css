@@ -1,13 +1,77 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+
+
+* {
+    margin: 0;
+    font-family: Garamond, serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.posteroids {
+    font-family: "Sour Gummy", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "width" 100;
 }
+
+.category-select {
+    border: none;
+    outline: none;
+}
+
+/* ==========================================
+   Components & Cards
+   ========================================== */
+.sticker {
+    height: 100px;
+    width: 100px;
+}
+
+.reviews {
+    height: 160px;
+    width: 230px;
+    border-radius: 5px;
+}
+
+.photo {
+    border-radius: 5px;
+}
+
+/* General product card spacing */
+.wpp,
+.wp {
+    margin: 10px;
+}
+
+/* Grid layout for Wall Posters and Polaroids pages */
+.wallp {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* 40px padding specifically for cards inside the grid layout */
+.wallp .wp {
+    padding: 40px;
+}
+
+/* Newsletter Input Placeholder */
+.sub::placeholder {
+    padding: 5px;
+    padding-left: 15px;
+}
+
+/* ==========================================
+   Payment Icons
+   ========================================== */
+.payment-icon {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.visa { color: #1A1F71; }
+.mastercard { color: #EB001B; }
+.paypal { color: #003087; }
+.applepay { color: #000000; }
+.amazonpay { color: #F3A847; }
+.googlewallet { color: #4285F4; }
