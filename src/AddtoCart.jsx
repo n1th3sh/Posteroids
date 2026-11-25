@@ -1,18 +1,22 @@
-import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
-import Header from "./Header";
-import { CartContext } from "./CartContext";
+import {
+  changeQuantity,
+  removeFromCart,
+  selectCartItems,
+} from "./features/cart/cartSlice";
+import { getProductImageUrl } from "./utils/productImage";
 
 function AddtoCart() {
-  const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
+  const cart = useSelector(selectCartItems);
+  const dispatch = useDispatch();
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <div>
-      <Header/>
 
       <div className="cart-page">
         <div className="cart-header">
@@ -32,23 +36,30 @@ function AddtoCart() {
               </div>
             ) : (
               cart.map((item) => (
-                <div className="cart-item" key={`${item.type}-${item.id}`}>
+                <div className="cart-item" key={String(item.id)}>
                   <div className="cart-item-image">
-                    <img src={item.image} alt={item.name} />
+                    <img
+                      src={getProductImageUrl(item.image, item.categoryName)}
+                      alt={item.name}
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src = "/logo512.png";
+                      }}
+                    />
                   </div>
 
                   <div className="cart-item-details">
                     <div className="cart-item-top">
                       <div>
                         <span className="cart-item-type">
-                          {item.type === "Polaroids" ? "POLAROID" : "POSTER"}
+                          {item.categoryName?.toLowerCase().includes("polaroid") ? "POLAROID" : "POSTER"}
                         </span>
                         <h3>{item.name}</h3>
                       </div>
 
                       <button
                         className="cart-remove"
-                        onClick={() => removeFromCart(item.id, item.type)}
+                        onClick={() => dispatch(removeFromCart(item.id))}
                       >
                         <i className="fa-solid fa-trash"></i>
                       </button>
@@ -58,9 +69,9 @@ function AddtoCart() {
 
                     {/* Quantity */}
                     <div className="cart-quantity">
-                      <button onClick={() => updateQuantity(item.id, item.type, -1)}>-</button>
+                      <button onClick={() => dispatch(changeQuantity({ id: item.id, amount: -1 }))}>-</button>
                       <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, item.type, 1)}>+</button>
+                      <button onClick={() => dispatch(changeQuantity({ id: item.id, amount: 1 }))}>+</button>
                     </div>
                   </div>
                 </div>

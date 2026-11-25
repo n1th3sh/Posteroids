@@ -1,36 +1,30 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import useFetch from "./useFetch";
-import { CartContext } from "./CartContext";
+import { useDispatch } from "react-redux";
+import { useGetProductQuery } from "./services/productsApi";
+import { addToCart } from "./features/cart/cartSlice";
+import { getProductCategoryName } from "./utils/product";
+import { getProductImageUrl } from "./utils/productImage";
+import ProductDetailSkeleton from "./ProductDetailSkeleton";
 
 function ViewCard() {
-  const { id, type } = useParams();
-  const { addToCart } = useContext(CartContext);
+  const { id } = useParams();
+  const dispatch = useDispatch();
   const [added, setAdded] = useState(false);
+  const { data: product, isLoading, isError } = useGetProductQuery(id);
 
-  const [ViewProductCard, error] = useFetch("http://localhost:3000/" + type + "/" + id);
+  if (isLoading) {
+  return <ProductDetailSkeleton />;
+}
 
-  if (!ViewProductCard) {
-    return (
-      <div className="status-container">
-        {!error && (
-          <img
-            src="/ekkant-circle-20050_512.gif"
-            alt="Loading"
-            className="loader-image"
-          />
-        )}
-        {error && (
-          <div className="error-card">
-            <h3 className="error-message">{error}</h3>
-          </div>
-        )}
-      </div>
-    );
+  if (isError || !product) {
+    return <div className="status-container"><h3 className="error-message">Could not load this product from the backend.</h3></div>;
   }
 
+  const categoryName = getProductCategoryName(product);
+
   const handleAddToCart = () => {
-    addToCart(ViewProductCard, type);
+    dispatch(addToCart(product));
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -42,38 +36,42 @@ function ViewCard() {
         <div className="view-image-section">
           <img
             className="view-product-image"
-            src={ViewProductCard.image}
-            alt={ViewProductCard.name}
+            src={getProductImageUrl(product.image, categoryName)}
+            alt={product.name}
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = "/logo512.png";
+            }}
           />
         </div>
 
         {/* Product Details */}
         <div className="view-details">
           <p className="view-type">
-            {type === "Polaroids" ? "POLAROID" : "WALL POSTER"}
+            {categoryName.toLowerCase().includes("polaroid") ? "POLAROID" : "WALL POSTER"}
           </p>
 
-          <h1 className="view-product-name">{ViewProductCard.name}</h1>
+          <h1 className="view-product-name">{product.name}</h1>
 
           <div className="view-rating">
-            <span>★ {ViewProductCard.rating}</span>
-            <span>{ViewProductCard.purchases}+ purchased</span>
+            <span>★ {product.rating ?? "—"}</span>
+            <span>{product.purchases ?? 0}+ purchased</span>
           </div>
 
-          <h2 className="view-price">₹{ViewProductCard.price}</h2>
+          <h2 className="view-price">₹{product.price}</h2>
 
           <p className="view-description">
-            High-quality {type === "Polaroids" ? "polaroid " : "wall poster "}
+            High-quality {categoryName.toLowerCase().includes("polaroid") ? "polaroid " : "wall poster "}
             designed to add a unique style to your space.
           </p>
 
           <div className="view-divider"></div>
 
           <div className="view-info">
-            <p><strong>Product:</strong> {ViewProductCard.name}</p>
-            <p><strong>Rating:</strong> {ViewProductCard.rating} / 5</p>
-            <p><strong>Purchased:</strong> {ViewProductCard.purchases}+</p>
-            <p><strong>Added:</strong> {ViewProductCard.dateAdded}</p>
+            <p><strong>Product:</strong> {product.name}</p>
+            <p><strong>Rating:</strong> {product.rating ?? "—"} / 5</p>
+            <p><strong>Purchased:</strong> {product.purchases ?? 0}+</p>
+            <p><strong>Added:</strong> {product.dateAdded || product.createdAt || "—"}</p>
           </div>
 
           <button className="add-cart-btn" onClick={handleAddToCart}>

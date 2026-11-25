@@ -1,0 +1,367 @@
+{
+"Wallposters": [
+{
+"id": 1,
+"image": "http://localhost:3000/wall posters/fight club.jpg",
+"name": "Fight Club Poster",
+"price": 99,
+"rating": 4.8,
+"purchases": 320,
+"dateAdded": "2026-01-15"
+},
+{
+"id": 2,
+"image": "http://localhost:3000/wall posters/hibiscus.jpg",
+"name": "Hibiscus Poster",
+"price": 99,
+"rating": 4.2,
+"purchases": 95,
+"dateAdded": "2026-03-10"
+},
+{
+"id": 3,
+"image": "http://localhost:3000/wall posters/batman.jpg",
+"name": "Batman Poster",
+"price": 99,
+"rating": 4.9,
+"purchases": 450,
+"dateAdded": "2026-02-01"
+},
+{
+"id": 4,
+"image": "http://localhost:3000/wall posters/mahaan.jpg",
+"name": "Mahaan Poster",
+"price": 99,
+"rating": 4.6,
+"purchases": 180,
+"dateAdded": "2026-02-18"
+},
+{
+"id": 5,
+"image": "http://localhost:3000/wall posters/neelambari.jpg",
+"name": "Neelambari Poster",
+"price": 99,
+"rating": 4.4,
+"purchases": 110,
+"dateAdded": "2026-01-22"
+},
+{
+"id": 6,
+"image": "http://localhost:3000/wall posters/pattrick.jpg",
+"name": "Pattrick Poster",
+"price": 99,
+"rating": 4.0,
+"purchases": 75,
+"dateAdded": "2026-03-05"
+},
+{
+"id": 7,
+"image": "http://localhost:3000/wall posters/porsche 911.jpg",
+"name": "Porsche 911 Poster",
+"price": 99,
+"rating": 4.9,
+"purchases": 510,
+"dateAdded": "2026-01-08"
+},
+{
+"id": 8,
+"image": "http://localhost:3000/wall posters/v2v.jpg",
+"name": "V2V Poster",
+"price": 99,
+"rating": 4.3,
+"purchases": 130,
+"dateAdded": "2026-02-28"
+},
+{
+"id": 9,
+"image": "http://localhost:3000/wall posters/pokkiri.jpg",
+"name": "Pokkiri Poster",
+"price": 99,
+"rating": 4.7,
+"purchases": 260,
+"dateAdded": "2026-01-19"
+},
+{
+"id": 10,
+"image": "http://localhost:3000/wall posters/billie eilish.jpg",
+"name": "Billie Eilish Poster",
+"price": 99,
+"rating": 4.5,
+"purchases": 210,
+"dateAdded": "2026-02-14"
+},
+{
+"id": 11,
+"image": "http://localhost:3000/wall posters/Luffy.jpg",
+"name": "Luffy Poster",
+"price": 99,
+"rating": 5.0,
+"purchases": 640,
+"dateAdded": "2026-03-12"
+},
+{
+"id": 12,
+"image": "http://localhost:3000/wall posters/messi.jpg",
+"name": "Messi Poster",
+"price": 99,
+"rating": 4.9,
+"purchases": 580,
+"dateAdded": "2026-01-05"
+},
+{
+"id": 13,
+"image": "http://localhost:3000/wall posters/kendrick.jpg",
+"name": "Kendrick Poster",
+"price": 99,
+"rating": 4.8,
+"purchases": 290,
+"dateAdded": "2026-02-20"
+},
+{
+"id": 14,
+"image": "http://localhost:3000/wall posters/porsche.jpg",
+"name": "Porsche Poster",
+"price": 99,
+"rating": 4.7,
+"purchases": 340,
+"dateAdded": "2026-01-28"
+},
+{
+"id": 15,
+"image": "http://localhost:3000/wall posters/Peaky Blinders.jpg",
+"name": "Peaky Blinders Poster",
+"price": 99,
+"rating": 4.9,
+"purchases": 420,
+"dateAdded": "2026-02-09"
+},
+{
+"id": 16,
+"image": "http://localhost:3000/wall posters/Bruno Mars.jpg",
+"name": "Bruno Mars Poster",
+"price": 99,
+"rating": 4.4,
+"purchases": 150,
+"dateAdded": "2026-03-01"
+},
+{
+"id": 17,
+"image": "http://localhost:3000/wall posters/neymar.jpg",
+"name": "Neymar Poster",
+"price": 99,
+"rating": 4.6,
+"purchases": 310,
+"dateAdded": "2026-01-30"
+},
+{
+"id": 18,
+"image": "http://localhost:3000/wall posters/meiyazhagan.jpg",
+"name": "Meiyazhagan Poster",
+"price": 99,
+"rating": 4.8,
+"purchases": 240,
+"dateAdded": "2026-03-15"
+},
+{
+"id": 19,
+"image": "http://localhost:3000/wall posters/zoro.jpg",
+"name": "Zoro Poster",
+"price": 99,
+"rating": 5.0,
+"purchases": 610,
+"dateAdded": "2026-03-18"
+},
+{
+"id": 20,
+"image": "http://localhost:3000/wall posters/ronaldo.jpg",
+"name": "Ronaldo Poster",
+"price": 99,
+"rating": 4.9,
+"purchases": 590,
+"dateAdded": "2026-01-02"
+}
+],
+
+"Polaroids": [
+{
+"id": 1,
+"image": "http://localhost:3000/polaroids/bmw.jpg",
+"name": "BMW Polaroid",
+"price": 19,
+"rating": 4.6,
+"purchases": 840,
+"dateAdded": "2026-01-10"
+},
+{
+"id": 2,
+"image": "http://localhost:3000/polaroids/ok jaanu.jpg",
+"name": "Ok jannu Polaroid",
+"price": 19,
+"rating": 4.8,
+"purchases": 320,
+"dateAdded": "2026-03-05"
+},
+{
+"id": 3,
+"image": "http://localhost:3000/polaroids/stranger things.jpg",
+"name": "Eleven Polaroid",
+"price": 19,
+"rating": 4.9,
+"purchases": 910,
+"dateAdded": "2026-02-15"
+},
+{
+"id": 4,
+"image": "http://localhost:3000/polaroids/sun flower.jpg",
+"name": "Sun flower Polaroid",
+"price": 19,
+"rating": 4.3,
+"purchases": 210,
+"dateAdded": "2026-03-18"
+},
+{
+"id": 5,
+"image": "http://localhost:3000/polaroids/ariana grande.jpg",
+"name": "Ariana grande Polaroid",
+"price": 19,
+"rating": 4.7,
+"purchases": 670,
+"dateAdded": "2026-01-28"
+},
+{
+"id": 6,
+"image": "http://localhost:3000/polaroids/billie eilish.jpg",
+"name": "Billie eilish Polaroid",
+"price": 19,
+"rating": 4.8,
+"purchases": 740,
+"dateAdded": "2026-02-10"
+},
+{
+"id": 7,
+"image": "http://localhost:3000/polaroids/cristiano.jpg",
+"name": "Cristiano Polaroid",
+"price": 19,
+"rating": 5.0,
+"purchases": 980,
+"dateAdded": "2026-01-05"
+},
+{
+"id": 8,
+"image": "http://localhost:3000/polaroids/bmw purple.jpg",
+"name": "Purple BMW Polaroid",
+"price": 19,
+"rating": 4.4,
+"purchases": 430,
+"dateAdded": "2026-02-22"
+},
+{
+"id": 9,
+"image": "http://localhost:3000/polaroids/delulu.jpg",
+"name": "Delulu Polaroid",
+"price": 19,
+"rating": 4.2,
+"purchases": 380,
+"dateAdded": "2026-03-12"
+},
+{
+"id": 10,
+"image": "http://localhost:3000/polaroids/dhoni.jpg",
+"name": "Dhoni Polaroid",
+"price": 19,
+"rating": 5.0,
+"purchases": 990,
+"dateAdded": "2026-01-02"
+},
+{
+"id": 11,
+"image": "http://localhost:3000/polaroids/gta 6.jpg",
+"name": "GTA 6 Polaroid",
+"price": 19,
+"rating": 4.9,
+"purchases": 860,
+"dateAdded": "2026-03-22"
+},
+{
+"id": 12,
+"image": "http://localhost:3000/polaroids/haaland.jpg",
+"name": "Haaland Polaroid",
+"price": 19,
+"rating": 4.5,
+"purchases": 520,
+"dateAdded": "2026-02-04"
+},
+{
+"id": 13,
+"image": "http://localhost:3000/polaroids/justin bieber.jpg",
+"name": "Justin bieber Polaroid",
+"price": 19,
+"rating": 4.6,
+"purchases": 610,
+"dateAdded": "2026-01-20"
+},
+{
+"id": 14,
+"image": "http://localhost:3000/polaroids/mamitha.jpg",
+"name": "Mamitha Polaroid",
+"price": 19,
+"rating": 4.8,
+"purchases": 790,
+"dateAdded": "2026-03-15"
+},
+{
+"id": 15,
+"image": "http://localhost:3000/polaroids/neymar.jpg",
+"name": "Neymar Polaroid",
+"price": 19,
+"rating": 4.7,
+"purchases": 690,
+"dateAdded": "2026-01-18"
+},
+{
+"id": 16,
+"image": "http://localhost:3000/polaroids/pink bmw.jpg",
+"name": "Pink BMW Polaroid",
+"price": 19,
+"rating": 4.1,
+"purchases": 290,
+"dateAdded": "2026-02-28"
+},
+{
+"id": 17,
+"image": "http://localhost:3000/polaroids/rolex.jpg",
+"name": "Rolex Polaroid",
+"price": 19,
+"rating": 4.9,
+"purchases": 940,
+"dateAdded": "2026-02-18"
+},
+{
+"id": 18,
+"image": "http://localhost:3000/polaroids/uchiha.jpg",
+"name": "Uchiha Polaroid",
+"price": 19,
+"rating": 5.0,
+"purchases": 960,
+"dateAdded": "2026-03-01"
+},
+{
+"id": 19,
+"image": "http://localhost:3000/polaroids/samantha.jpg",
+"name": "Samantha Polaroid",
+"price": 19,
+"rating": 4.7,
+"purchases": 570,
+"dateAdded": "2026-02-25"
+},
+{
+"id": 20,
+"image": "http://localhost:3000/polaroids/virat.jpg",
+"name": "Virat Polaroid",
+"price": 19,
+"rating": 5.0,
+"purchases": 1000,
+"dateAdded": "2026-01-01"
+}
+]
+}

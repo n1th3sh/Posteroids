@@ -1,32 +1,36 @@
 import React, { useState } from 'react';
-import Header from './Header';
 import Features from './Features';
 import Footer from './Footer';
 import PolaroidList from './PolaroidList';
-import PolaroidsBanner from './banner/polaroids banner.png';
+import PolaroidsBanner from './assets/banner/polaroids banner.png';
+import SortDropdown from './SortDropdown';
 
 function Polaroids() {
   const [sortBy, setSortBy] = useState('Popular');
 
   return (
     <div>
-      <Header />
-
       <div>
         <img src={PolaroidsBanner} alt="Polaroids Banner" className="banner-page" />
       </div>
 
       <div className="filter-bar">
-        <div>
-          <label className="filter-label">Showing 1-16 of 248 products</label>
+        <div className="filter-heading">
+          <span className="filter-eyebrow">POLAROID COLLECTION</span>
+          <span className="filter-title">Keep a little moment</span>
         </div>
-        <div>
-          <label className="filter-label">Sort by:</label>{' '}
-          <select className="category-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="Popular">Popular</option>
-            <option value="Top Rated">Top Rated</option>
-            <option value="Newest">Newest</option>
-          </select>
+        <div className="sort-control">
+          <span className="sort-control-label">Sort by</span>
+          <SortDropdown
+            value={sortBy}
+            onChange={setSortBy}
+            label="Sort polaroids"
+            options={[
+              { value: 'Popular', label: 'Popular' },
+              { value: 'Top Rated', label: 'Top rated' },
+              { value: 'Newest', label: 'Newest first' },
+            ]}
+          />
         </div>
       </div>
 

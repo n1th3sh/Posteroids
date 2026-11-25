@@ -1,63 +1,27 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import Header from './Header';
 import Features from './Features';
 import Footer from './Footer';
 
-import footerbanner from './banner/footer banner.png';
-import rightarrow from './banner/right-arrow.png';
-import wallpostersection from './banner/Wall Posters section.png';
-import polaroidsection from './banner/Polaroids section.png';
+import footerbanner from './assets/banner/footer banner.png';
+import rightarrow from './assets/banner/right-arrow.png';
+import wallpostersection from './assets/banner/Wall Posters section.png';
+import polaroidsection from './assets/banner/Polaroids section.png';
 
-import stickeranime from './sticker/anime.jpg';
-import stickermovie from './sticker/movie.jpg';
-import stickergaming from './sticker/gaming.jpg';
-import stickermusic from './sticker/music.jpg';
-import stickercar from './sticker/car.jpg';
-import stickeraesthetic from './sticker/aesthetic.jpg';
-import stickercelebrities from './sticker/celebrities.jpg';
-import stickersport from './sticker/sport.jpg';
-
-import rev1 from './reviews/rev 1.jpg';
-import rev2 from './reviews/rev 2.jpg';
-import rev3 from './reviews/rev 3.jpg';
-import rev4 from './reviews/rev 4.jpg';
-import rev5 from './reviews/rev 5.jpg';
-import rev6 from './reviews/rev 6.jpg';
-
-const categories = [
-  { name: 'Anime', img: stickeranime },
-  { name: 'Movie', img: stickermovie },
-  { name: 'Gaming', img: stickergaming },
-  { name: 'Music', img: stickermusic },
-  { name: 'Car', img: stickercar },
-  { name: 'Aesthetic', img: stickeraesthetic },
-  { name: 'Celebrities', img: stickercelebrities },
-  { name: 'Sport', img: stickersport },
-];
+import rev1 from './assets/reviews/rev 1.jpg';
+import rev2 from './assets/reviews/rev 2.jpg';
+import rev3 from './assets/reviews/rev 3.jpg';
+import rev4 from './assets/reviews/rev 4.jpg';
+import rev5 from './assets/reviews/rev 5.jpg';
+import rev6 from './assets/reviews/rev 6.jpg';
 
 const reviews = [rev1, rev2, rev3, rev4, rev5, rev6];
 
 function Home() {
   return (
     <div>
-      <Header />
-
       <div>
         <img src={footerbanner} alt="Home Banner" className="banner-home" />
-      </div>
-
-      <p className="section-title">Shop By Categories</p>
-
-      <div className="categories-container">
-        {categories.map((cat, idx) => (
-          <div key={idx}>
-            <Link className="category-item-link" to={`/categories/${cat.name.toLowerCase()}`}>
-              <img className="sticker" src={cat.img} alt={cat.name} /> <br />
-              <label className="category-label">{cat.name}</label>
-            </Link>
-          </div>
-        ))}
       </div>
 
       <div className="collection-section">

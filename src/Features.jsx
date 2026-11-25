@@ -1,5 +1,5 @@
 import React from 'react';
-import iconspremiumquality from './icons/premium-quality.png';
+import iconspremiumquality from './assets/icons/premium-quality.png';
 
 const featureList = [
   { title: 'Premium Quality', desc: 'vibrant colors &\ndurable materials' },

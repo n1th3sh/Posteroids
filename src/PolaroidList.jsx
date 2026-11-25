@@ -1,51 +1,37 @@
 import ProductCard from "./ProductCard";
-import useFetch from "./useFetch";
+import { useGetProductsQuery } from './services/productsApi';
+import { isProductInCategory } from './utils/product';
+import catalog from './data/productCard.json';
 
-function PolaroidList({sortBy='Popular'}){
-    
+function PolaroidList({ sortBy = 'Popular' }) {
+  const { data: apiProducts = [], isLoading, isError, error } = useGetProductsQuery();
 
-    const [polaroids, error]=useFetch('http://localhost:3000/Polaroids');
-    
-
-    if(!polaroids){
-    return(
-      <>
-        {!error && (<img src="/ekkant-circle-20050_512.gif" alt="Loading" style={{width:"100px"}} />)}
-        {error && <h3>{error}</h3>}
-      </>
-    )
+  if (isLoading) {
+    return <img src="/ekkant-circle-20050_512.gif" alt="Loading products" style={{ width: '100px' }} />;
   }
+  // Keep the shop usable when Spring Boot is stopped. The API remains the
+  // source of truth whenever it responds; local JSON is only an offline fallback.
+  const products = isError
+    ? (catalog.Polaroids || []).map((product) => ({ ...product, category: 'Polaroids' }))
+    : apiProducts;
 
-    const sortedpolaroids=[...polaroids].sort((a,b)=>{
-      if (sortBy === 'Popular') {
-      return b.purchases - a.purchases;
-    }
-    if (sortBy === 'Top Rated') {
-      return b.rating - a.rating;
-    }
-    if (sortBy === 'Newest') {
-      return new Date(b.dateAdded) - new Date(a.dateAdded);
-    }
-      return 0;
-    });
-    return(
-        <>
-            {sortedpolaroids.map(
-            (polaroid)=> 
-            <ProductCard
-              key={polaroid.id}
-              id={polaroid.id}
-              type="Polaroids"
-              image={polaroid.image}
-              picName={polaroid.name}
-              Price={polaroid.price}
-              rating={polaroid.rating}
-              purchases={polaroid.purchases}
-              dateAdded={polaroid.dateAdded}
-            />
-            )}
-        </>
-    )
+  const polaroids = products.filter((product) => isProductInCategory(product, 'polaroid'));
+  const sortedPolaroids = [...polaroids].sort((a, b) => {
+    if (sortBy === 'Popular') return (b.purchases || 0) - (a.purchases || 0);
+    if (sortBy === 'Top Rated') return (b.rating || 0) - (a.rating || 0);
+    if (sortBy === 'Newest') return new Date(b.dateAdded || b.createdAt) - new Date(a.dateAdded || a.createdAt);
+    return 0;
+  });
+
+  if (sortedPolaroids.length === 0) return <h3>No polaroids were returned by the backend.</h3>;
+  return <>
+    {isError && <p className="catalog-fallback-note">
+      Could not load products from the backend{error?.status ? ` (${error.status})` : ''}; showing the saved catalog.
+    </p>}
+    {sortedPolaroids.map((product) => (
+      <ProductCard key={String(product.id)} product={product} />
+    ))}
+  </>;
 }
 
 export default PolaroidList;
