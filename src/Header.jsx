@@ -1,39 +1,94 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from './auth/AuthContext';
 
 function Header() {
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  const [searchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  useEffect(() => {
+    setSearchTerm(searchParams.get('q') || '');
+  }, [searchParams]);
+
+  const submitSearch = (event) => {
+    event.preventDefault();
+    const query = searchTerm.trim();
+    if (query) navigate(`/Search?q=${encodeURIComponent(query)}`);
+  };
+
+  const updateSearch = (value) => {
+    setSearchTerm(value);
+    const query = value.trim();
+    if (query) {
+      navigate(`/Search?q=${encodeURIComponent(query)}`, { replace: true });
+    } else if (window.location.pathname.toLowerCase() === '/search') {
+      navigate('/Search', { replace: true });
+    }
+  };
+
   return (
-    <div className="header">
-      <h1 className="posteroids">Posteroids.</h1>
+    <header className="site-header">
+      <div className="header-inner">
+        <Link className="brand-link" to="/" aria-label="Posteroids home">
+          <span className="brand-stamp" aria-hidden="true">P</span>
+          <span className="posteroids">posteroids<span className="brand-dot">.</span></span>
+        </Link>
 
-      <div className="nav-links">
-        <Link className="FooterLink" to="/Home">Home</Link>
-        <Link className="FooterLink" to="/WallPosters">Wall Posters</Link>
-        <Link className="FooterLink" to="/Polaroids">Polaroids</Link>
-        <Link className="FooterLink" to="/CustomPrints">Custom Prints</Link>
-        
-        <select className="category-select" defaultValue="">
-          <option value="" disabled>Categories</option>
-          <option value="Anime">Anime</option>
-          <option value="Movie">Movie</option>
-          <option value="Gaming">Gaming</option>
-          <option value="Music">Music</option>
-          <option value="Cars">Cars</option>
-          <option value="Aesthetic">Aesthetic</option>
-          <option value="Celebrities">Celebrities</option>
-          <option value="Sports">Sports</option>
-        </select>
+        <nav className="header-nav" aria-label="Main navigation">
+          <NavLink className={({ isActive }) => `header-nav-link${isActive ? ' is-active' : ''}`} to="/">Home</NavLink>
+          <NavLink className={({ isActive }) => `header-nav-link${isActive ? ' is-active' : ''}`} to="/WallPosters">Wall Posters</NavLink>
+          <NavLink className={({ isActive }) => `header-nav-link${isActive ? ' is-active' : ''}`} to="/Polaroids">Polaroids</NavLink>
+          <NavLink className={({ isActive }) => `header-nav-link${isActive ? ' is-active' : ''}`} to="/CustomPrints">Custom Prints</NavLink>
+          <NavLink className={({ isActive }) => `header-nav-link${isActive ? ' is-active' : ''}`} to="/about">About Us</NavLink>
+        </nav>
 
-        <Link className="FooterLink about-link" to="/about">About Us</Link>
+        <form className="search-form" role="search" onSubmit={submitSearch}>
+          <input
+            type="search"
+            className="search-input"
+            placeholder="Search prints..."
+            aria-label="Search products"
+            value={searchTerm}
+            onChange={(event) => updateSearch(event.target.value)}
+          />
+          <button className="search-submit" type="submit" aria-label="Submit product search">
+            <i className="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          </button>
+        </form>
+
+        <Link className="cart-link" to="/AddtoCart" aria-label="Open shopping cart" title="Shopping cart">
+          <i className="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+          <span>Cart</span>
+        </Link>
+
+        <div className="profile-wrap">
+          <button
+            className={`profile-button${profileOpen ? ' is-open' : ''}`}
+            type="button"
+            aria-label="Open profile menu"
+            aria-expanded={profileOpen}
+            aria-controls="profile-menu"
+            onClick={() => setProfileOpen((open) => !open)}
+          >
+            <i className="fa-regular fa-user" aria-hidden="true"></i>
+            <span>Profile</span>
+            <i className="fa-solid fa-chevron-down profile-chevron" aria-hidden="true"></i>
+          </button>
+          {profileOpen && (
+            <div className="profile-menu" id="profile-menu">
+              <span className="profile-menu-label">YOUR ACCOUNT</span>
+              {user ? <><p>Signed in as {user.email}</p><Link to="/orders" onClick={() => setProfileOpen(false)}>Order history</Link><button className="profile-auth-action" type="button" onClick={() => { signOut(); setProfileOpen(false); }}>Sign out</button></> : <><p>Browsing as a guest</p><Link to="/login" onClick={() => setProfileOpen(false)}>Sign in</Link><Link to="/register" onClick={() => setProfileOpen(false)}>Create account</Link></>}
+              <Link to="/AddtoCart" onClick={() => setProfileOpen(false)}>
+                View your cart <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
-
-      <input type="text" className="search-input" placeholder="Search Posters, Categories..." />
-      
-      <i className="fa-solid fa-magnifying-glass nav-icon"></i>
-      <i className="fa-solid fa-heart nav-icon"></i>
-      <i className="fa-solid fa-user nav-icon"></i>
-      <Link to="/AddtoCart"><i className="fa-solid fa-cart-shopping nav-icon"></i></Link>
-    </div>
+    </header>
   );
 }
 

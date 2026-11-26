@@ -26,27 +26,46 @@ Set the same exact backend callback URL in Google Cloud Console and `GOOGLE_REDI
 ```text
 https://YOUR_API_HOST/api/login/oauth2/code/google
 ```
+`r`nAdd the frontend domain to the Google OAuth consent screen's authorized domains and set the Google client ID/secret only on the backend. Set `FRONTEND_URL` to the frontend origin and list that origin in `CORS_ALLOWED_ORIGINS`. Configure SMTP (`MAIL_*`) before enabling registration, since the register endpoint must send verification codes.
 
-Add the frontend domain to the Google OAuth consent screen's authorized domains and set the Google client ID/secret only on the backend. Set `FRONTEND_URL` to the frontend origin and list that origin in `CORS_ALLOWED_ORIGINS`. Configure SMTP (`MAIL_*`) before enabling registration, since the register endpoint must send verification codes.
+## Local development
+
+In IntelliJ, add `-Dspring.profiles.active=local` to the backend run configuration's VM options. Keep the backend `.env` in the project root; the backend imports it when the working directory is either the project root or its parent folder. With the `local` profile active, email verification codes are printed in the backend logs instead of sent through SMTP. Google sign-in stays disabled unless the `google-oauth` profile is enabled and valid Google client credentials are supplied.
 
 ## Vercel and Neon
 
 Vercel Postgres was replaced by Postgres providers through the Vercel Marketplace; Neon is one option. Connect a Neon Postgres integration to the Vercel project to provision/link a database and receive provider environment variables. This project is a Spring Boot/Java server; Vercel's official Functions runtime list does not include Java. Deploy the React frontend to Vercel and run this Spring Boot API on a Java-capable host. Copy the Neon connection details into that API host's variables, converting the provider URL to a JDBC URL if needed. Set `JDBC_DATABASE_URL`, `DB_USER`, and `DB_PASSWORD` on the backend host, and set the frontend's API base URL to `https://YOUR_API_HOST/api`.
 
-On the first backend startup against the chosen database, Hibernate will create the two auth tables. Existing `products` and `categories` tables continue using the same database configuration. For production, prefer a migration tool and `ddl-auto=validate` after the schema is established.
+The configured Vercel Marketplace Neon database already contains `public.app_users`, `public.email_verification_codes`, `public.products`, and `public.categories`. Additive Flyway migration `V1__create_cart_and_order_tables.sql` creates only `carts`, `cart_items`, `orders`, and `order_items`. The existing non-empty schema is baselined at version 0 so V1 can run without recreating existing tables. JPA remains on `ddl-auto=update` for the existing application mappings.
 
-## Frontend handoff prompt
+## Persistent carts and orders
+
+The API runs under `/api`. Cart and order routes require `Authorization: Bearer <token>` and take the owner only from Spring Security's validated JWT principal. The browser never supplies a user ID or price. The backend reads current catalog prices, calculates totals, and stores order-time product name, image, category, unit-price, and quantity snapshots. Product deletion leaves the order snapshot intact and nulls its product reference.
+
+| Method | Route | Request | Purpose |
+| --- | --- | --- | --- |
+| GET | `/api/cart` | — | Current user's cart and subtotal |
+| PUT | `/api/cart/items/{productId}` | `{ "quantity": 2 }` | Set quantity from 1 to 99 |
+| DELETE | `/api/cart/items/{productId}` | — | Remove a cart item |
+| POST | `/api/orders` | Shipping address JSON | Place an order and clear the cart items |
+| GET | `/api/orders` | — | Current user's order history |
+| GET | `/api/orders/{orderId}` | — | One order owned by the current user |
+
+Checkout JSON fields: `name`, `phone`, `addressLine1`, `addressLine2` (optional), `city`, `region`, `postalCode`, and two-letter `countryCode`. New orders have `PLACED` status. Payment is not collected or recorded by these endpoints.
+
+Flyway adds user/product/order foreign keys, quantity and nonnegative amount checks, a unique cart per user, a unique product row per cart, and lookup indexes. It runs automatically at backend startup. No new environment variables are required. `JDBC_DATABASE_URL`, `DB_USER`, and `DB_PASSWORD` stay only on Railway; React calls the API using `REACT_APP_API_BASE_URL` and must not connect directly to Neon. For local development, point the API at a local or disposable PostgreSQL database and let Flyway apply V1 there; do not run local schema development against production.
+
+## Frontend cart and checkout integration
 
 ```text
-In this repository, build responsive login, registration, and email verification screens for the existing Posteroids React frontend. Connect to the Spring Boot API at the configurable VITE_API_BASE_URL (default http://localhost:8080/api).
+Wire the existing Posteroids React cart and checkout screens to the authenticated Spring API. Use the current API base URL and AuthContext token. Do not connect React directly to Postgres/Neon or expose database credentials.
 
-API contract:
-- POST /auth/register {email, name, password} -> 202 {message}
-- POST /auth/verify-email {email, code} -> {token, email, name, role}
-- POST /auth/resend-code {email} -> 202 {message}
-- POST /auth/login {email, password} -> {token, email, name, role}
-- GET /auth/me with Authorization: Bearer <token> -> current user/token response
-- Google sign-in: navigate the browser to ${VITE_API_BASE_URL}/oauth2/authorization/google. Add a /auth/callback route that reads token from location.hash, saves it to the app auth state, removes the hash with history.replaceState, then redirects to the intended page.
+Send Authorization: Bearer <token> for:
+- GET /cart -> {id, items:[{productId,name,image,categoryName,unitPrice,quantity,lineTotal}], subtotal, currency}
+- PUT /cart/items/{productId} with {quantity} (absolute quantity, 1–99)
+- DELETE /cart/items/{productId}
+- POST /orders with {name, phone, addressLine1, addressLine2, city, region, postalCode, countryCode}
+- GET /orders and GET /orders/{orderId}
 
-Create accessible forms with client-side required/email/password checks, loading and disabled states, clear API error messages, a six-digit verification-code input, resend-code action, password visibility toggle, and links between login/registration. Preserve existing Posteroids styling and navigation. Add an auth provider/hook or equivalent shared state, attach the bearer token to protected API requests, and provide a logout action that clears it. Do not expose Google client secrets in frontend code. Do not create a second auth database schema in the frontend: the backend JPA entities create app_users and email_verification_codes in the configured PostgreSQL database. Add VITE_API_BASE_URL to the frontend's documented environment variables and use the deployed API origin in production.
+Keep the guest cart usable and merge it into the signed-in account cart. Clear guest items only after the server confirms the merge. Prompt guests to sign in before checkout. Show loading, empty, validation, error, confirmation, and order history states. Use server-returned prices and totals; never trust a total supplied by the browser. Orders have PLACED status and this API does not process payment. The backend migration owns the schema; do not create a frontend database schema.
 ```
